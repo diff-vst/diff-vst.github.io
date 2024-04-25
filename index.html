@@ -1,0 +1,1038 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <style>
+      audio { width: 300px;}
+      </style>
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title> |  Audio Demo</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content=": Denoising Diffusion Models with Multi-Style Decoupling Attention for Controllable Voice Style Transfer
+Track Name" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content=" Audio Demo" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="" />
+
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <!-- <link rel="stylesheet" href="./assets/css/head.css"> -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+    <nav class="navbar navbar-expand-lg bg-secondary fixed-top" id="mainNav", high='100px', font-color="'white">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">Outlines</a>
+          <button class="navbar-toggler navbar-toggler-right font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu <i class="fas fa-bars"></i></button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+              <ul class="navbar-nav ml-auto", >
+                  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#abstract">ABSTRACT</a>
+                  <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#Architecture">MODEL ARCHITECTURE</a></li> -->
+                  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#VST">VOICE STYLE TRANSFER</a></li> 
+                  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#EVC">EMOTIONAL VOICE CONVERSION</a></li>
+                  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#VC">VOICE CONVERSION</a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+      <h1 class="project-name">Denoising Diffusion Models with Multi-Style Decoupling Attention for Controllable Voice Style Transfer</h1>
+     <p style="font-size:30px"> Anonymous  </p>
+   
+     <!-- <button class="button_style" onclick="location.href='https://www.isca-archive.org/interspeech_2023/chen23_interspeech.html'" type="button">Paper</button> -->
+    </header>
+
+
+    
+    <main id="content" class="main-content" role="main">   
+
+<h2 id="abstract"><b>Abstract</b></h2>
+<p style="text-align:justify;">Voice style transfer aims to preserve the content of speech while altering attributes such as timbre or emotion. 
+    The simultaneous transfer of these attributes has become increasingly important in artificial intelligence development.
+    Despite the notable progress achieved by diffusion-based generative models in voice style transfer, the inherent limitations associated with parameter sharing across different stages of generation pose significant challenges in effectively controlling both timbre and emotion concurrently.
+    To tackle this challenge, we propose , a Diffusion model with multi-style decoupling attention for Voice Style Transfer. 
+    First, we leverage self-supervised representation to disentangle speech representations.
+    Subsequently, we introduce the Multi-Style Decoupling Attention to facilitate disentanglement guidance, enabling precise and independent control over noise denoising associated with each attribute and yielding fusion representation.
+    Then, the diffusion model uses the fusion representation for style transfer with timbre and emotion attributes.
+    Moreover, we also propose multi-style classifier-free guidance in the sample stage for attribute control, which can realize fine-grained control for emotion attributes and timbre expression.
+    Finally, we demonstrate the superiority of our approach over existing style transfer methods in terms of both timbre and emotion transfer.
+    <!-- Our code will be available. -->
+</p>
+
+<hr />
+
+    <!-- <h1 id="starganv2-vc">-EVC</h1> -->
+<!-- <h2 id='Architecture'><b>Model Architecture</b></h2>
+
+<p style="text-align: center;">
+<img src="./images/model.png" width="1200">
+</p> -->
+
+
+<h2 id="VST"><b>Voice Style transfer</b></h2>   
+In this section, we simultaneously transfer the emotion and timbre of the original speech.
+
+<h3 id="female-to-female">Neutral to Happy</h3>
+
+
+
+<div class="col-lg-12 ml-auto">
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+        <!-- <th style="width: 30%">         </th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0018_000042.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <!-- <td rowspan="4" style="vertical-align: top;"><p></p></td> -->
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <!-- <form action="#">
+            <label for="lang">Emotion</label>
+              <select name="emotion" id="lang">
+                <option value="Happy">Select target emotion</option>
+                <option value="Happy">Happy</option>
+                <option value="Surprise">Surprise</option>
+                <option value="Sad">Sad</option>
+                <option value="Angry">Angry</option>
+                <option value="Neutral">Neutral</option>
+              </select>
+            <input type="submit" value="Submit" />
+          </form>
+        
+          <form action="#">
+            <label for="lang">Speaker</label>
+              <select name="speaker" id="lang">
+                <option value="Happy">Select target speaker</option>
+                <option value="0011">0011</option>
+                <option value="0012">0012</option>
+                <option value="0015">0015</option>
+                <option value="0020">0020</option>
+              </select>
+            <input type="submit" value="Submit" />
+          </form> -->
+
+          <audio id="player" controls>
+              <source src="./audios/0013_000742.wav" type="audio/wav" />
+          </audio>
+        </td>
+
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Neutral_0018_000042_2_Happy_0013_000739_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+
+      <tr>
+          <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0014_000026.wav"  type="audio/wav" />
+          </audio>
+        </td>
+
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0015_000726.wav" type="audio/wav" />
+          </audio>
+        </td>
+
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Neutral_0014_000026_2_Happy_0015_000729_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+   
+    </tbody>
+  </table>
+  
+
+
+
+  <p> </p>  
+  <h3 id="female-to-female">Neutral to Sad</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+        <audio id="player" controls>
+            <source src="./audios/0020_000024.wav"  type="audio/wav" />
+        </audio>
+      </td>
+      <td rowspan="2" style="vertical-align: top;"><p></p>
+        <audio id="player" controls>
+            <source src="./audios/0014_001074.wav" type="audio/wav" />
+        </audio>
+    
+      <td><p> </p>
+        <audio id="player" controls>
+            <source src="./audios/Neutral_0020_000024_2_Sad_0014_001073_vis.wav" type="audio/wav" />
+        </audio>
+      </td>
+
+    <tr></tr>
+    <tr></tr>
+
+    </tr>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0016_000049.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0015_001099.wav" type="audio/wav" />
+          </audio>
+        </td>
+
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Neutral_0016_000049_2_Sad_0015_001076_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+    
+
+   
+    </tbody>
+  </table>
+
+
+  <p> </p>  
+  <h3 id="female-to-female">Neutral to Surprise</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+
+        
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+        <audio id="player" controls>
+            <source src="./audios/0018_000029.wav"  type="audio/wav" />
+        </audio>
+      </td>
+      <td rowspan="2" style="vertical-align: top;"><p></p>
+        <audio id="player" controls>
+            <source src="./audios/0013_001429.wav" type="audio/wav" />
+        </audio>
+   
+      <td><p> </p>
+        <audio id="player" controls>
+            <source src="./audios/Neutral_0018_000029_2_Surprise_0013_001442_vis.wav" type="audio/wav" />
+        </audio>
+      </td>
+
+    <tr></tr>
+    <tr></tr>
+
+    </tr>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0013_000036.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0012_001436.wav" type="audio/wav" />
+          </audio>
+    
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Neutral_0013_000036_2_Surprise_0012_001424_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+    
+
+   
+    </tbody>
+  </table>
+
+
+
+  <p> </p>  
+  <h3 id="female-to-female">Happy to Neutral</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0013_000726.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0017_000026.wav" type="audio/wav" />
+          </audio>
+    
+
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Happy_0013_000726_2_Neutral_0017_000042_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+
+      <tr>
+          <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0012_000744.wav"  type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0011_000044.wav" type="audio/wav" />
+          </audio>
+
+
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Happy_0012_000744_2_Neutral_0011_000047_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+   
+    </tbody>
+  </table>
+
+
+  <p> </p>  
+  <h3 id="female-to-female">Happy to Sad</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0014_000725.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0016_001075.wav" type="audio/wav" />
+          </audio>
+        </td>
+     
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Happy_0014_000725_2_Sad_0016_001078_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+
+      <tr>
+          <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0012_000744.wav"  type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0019_001094.wav" type="audio/wav" />
+          </audio>
+        </td>
+
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Happy_0012_000744_2_Sad_0019_001100_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+   
+    </tbody>
+  </table>
+
+
+  
+  <p> </p>  
+  <h3 id="female-to-female">Angry to Sad</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0015_000372.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0013_001072.wav" type="audio/wav" />
+          </audio>
+        </td>
+    
+
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Angry_0015_000372_2_Sad_0013_001091_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+
+      <tr>
+          <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0018_000377.wav"  type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0012_001077.wav" type="audio/wav" />
+          </audio>
+        </td>
+  
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Angry_0018_000377_2_Sad_0012_001074_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+   
+    </tbody>
+  </table>
+
+
+  <p> </p>  
+  <h3 id="female-to-female">Sad to Angry</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0019_001075.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0016_000375.wav" type="audio/wav" />
+          </audio>
+        </td>
+      
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Sad_0019_001075_2_Angry_0016_000381_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+
+      <tr>
+          <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0019_001074.wav"  type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0018_000374.wav" type="audio/wav" />
+          </audio>
+        </td>
+      
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Sad_0019_001074_2_Angry_0018_000373_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+   
+    </tbody>
+  </table>
+
+
+  <p> </p>  
+  <h3 id="female-to-female">Sad to Surprise</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0015_001095.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0013_001445.wav" type="audio/wav" />
+          </audio>
+        </td>
+   
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Sad_0015_001095_2_Surprise_0013_001431_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+
+      <tr>
+          <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0014_001097.wav"  type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0013_001447.wav" type="audio/wav" />
+          </audio>
+        </td>
+
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Sad_0014_001097_2_Surprise_0013_001428_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+   
+    </tbody>
+  </table>
+
+
+  <p> </p>  
+  <h3 id="female-to-female">Surprise to Neutral</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0019_001447.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0013_000047.wav" type="audio/wav" />
+          </audio>
+        </td>
+      
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Surprise_0019_001447_2_Neutral_0013_000033_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+
+      <tr>
+          <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0018_001441.wav"  type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0020_000041.wav" type="audio/wav" />
+          </audio>
+        </td>
+      
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Surprise_0018_001441_2_Neutral_0020_000025_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <p> </p>  
+  <h3 id="female-to-female">Surprise to Angry</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0019_001447.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0019_000397.wav" type="audio/wav" />
+          </audio>
+        </td>
+    
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Surprise_0019_001447_2_Angry_0019_000386_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+
+      <tr>
+          <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0014_001427.wav"  type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0020_000377.wav" type="audio/wav" />
+          </audio>
+        </td>
+      
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Surprise_0014_001427_2_Angry_0020_000375_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+   
+    </tbody>
+  </table>
+
+
+
+
+<h2 id="EVC"><b>Emotional Voice Conversion</b></h2>
+
+In this section, our focus is solely on transferring the emotion from the source speech to the target speech while preserving the speaker's identity.
+
+<h3 id="female-to-female">Sad to Surprise</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0016_001080.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0016_001430.wav" type="audio/wav" />
+          </audio>
+        </td>
+    
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Sad_0016_001080_2_Surprise_0016_001429_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+
+      <tr>
+          <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0016_001076.wav"  type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0016_001426.wav" type="audio/wav" />
+          </audio>
+        </td>
+      
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Sad_0016_001076_2_Surprise_0016_001443_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+   
+    </tbody>
+  </table>
+
+
+  <h3 id="female-to-female">Angry to Sad</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0014_000389.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0014_001089.wav" type="audio/wav" />
+          </audio>
+        </td>
+    
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Angry_0014_000389_2_Sad_0014_001078_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+
+      <tr>
+          <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0016_000399.wav"  type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0016_001099.wav" type="audio/wav" />
+          </audio>
+        </td>
+      
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Angry_0016_000399_2_Sad_0016_001079_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+   
+    </tbody>
+  </table>
+
+
+
+  <h3 id="female-to-female">Surprise to Neutral</h3>
+
+  <table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+    <thead>
+      <tr>
+        <th style="width: 10%">Source</th>
+        <th style="width: 20%">Target</th>
+        <th style="width: 30%">diffVST converted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls >
+              <source src="./audios/0018_001441.wav" type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0018_000041.wav" type="audio/wav" />
+          </audio>
+        </td>
+    
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Surprise_0018_001441_2_Neutral_0018_000041_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+
+      <tr>
+          <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0016_000399.wav"  type="audio/wav" />
+          </audio>
+        </td>
+        <td rowspan="7" style="vertical-align: top;"><p></p>
+          <audio id="player" controls>
+              <source src="./audios/0016_001099.wav" type="audio/wav" />
+          </audio>
+        </td>
+      
+        <td><p> </p>
+          <audio id="player" controls>
+              <source src="./audios/Angry_0016_000399_2_Sad_0016_001079_vis.wav" type="audio/wav" />
+          </audio>
+        </td>
+      </tr>
+   
+    </tbody>
+  </table>
+
+
+</body>
+
+
+<h2 id="VC"><b>Voice Conversion</b></h2>
+
+
+In this section, our goal is to retain the emotion while solely transferring the timbre of the source speech to the target speech.
+
+<p> </p>  
+
+<table class="table table-responsive align-content-center" style="background-color: whitesmoke; border-radius: 20px", width="100">
+  <thead>
+    <tr>
+      <th style="width: 10%">Source</th>
+      <th style="width: 20%">Target</th>
+      <th style="width: 30%">diffVST converted</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="2" style="vertical-align: top;"><p></p>
+        <audio id="player" controls >
+            <source src="./audios/0013_000383.wav" type="audio/wav" />
+        </audio>
+      </td>
+      <td rowspan="2" style="vertical-align: top;"><p></p>
+        <audio id="player" controls>
+            <source src="./audios/0016_000383.wav" type="audio/wav" />
+        </audio>
+      </td>
+  
+      <td><p> </p>
+        <audio id="player" controls>
+            <source src="./audios/Angry_0013_000383_2_Angry_0016_000385_vis.wav" type="audio/wav" />
+        </audio>
+      </td>
+    </tr>
+    <tr></tr>
+    <tr></tr>
+
+    <tr>
+        <td rowspan="2" style="vertical-align: top;"><p></p>
+        <audio id="player" controls>
+            <source src="./audios/0013_000388.wav"  type="audio/wav" />
+        </audio>
+      </td>
+      <td rowspan="2" style="vertical-align: top;"><p></p>
+        <audio id="player" controls>
+            <source src="./audios/0020_000388.wav" type="audio/wav" />
+        </audio>
+      </td>
+    
+      <td><p> </p>
+        <audio id="player" controls>
+            <source src="./audios/Angry_0013_000388_2_Angry_0020_000399_vis.wav" type="audio/wav" />
+        </audio>
+      </td>
+    </tr>
+
+    <tr></tr>
+    <tr></tr>
+    
+    <tr>
+      <td rowspan="2" style="vertical-align: top;"><p></p>
+      <audio id="player" controls>
+          <source src="./audios/0014_000397.wav"  type="audio/wav" />
+      </audio>
+    </td>
+    <td rowspan="2" style="vertical-align: top;"><p></p>
+      <audio id="player" controls>
+          <source src="./audios/0015_000397.wav" type="audio/wav" />
+      </audio>
+    </td>
+  
+    <td><p> </p>
+      <audio id="player" controls>
+          <source src="./audios/Angry_0014_000397_2_Angry_0015_000391_vis.wav" type="audio/wav" />
+      </audio>
+    </td>
+  </tr>
+
+  <tr></tr>
+  <tr></tr>
+  
+  <tr>
+    <td rowspan="2" style="vertical-align: top;"><p></p>
+    <audio id="player" controls>
+        <source src="./audios/0012_000022.wav"  type="audio/wav" />
+    </audio>
+  </td>
+  <td rowspan="2" style="vertical-align: top;"><p></p>
+    <audio id="player" controls>
+        <source src="./audios/0016_000022.wav" type="audio/wav" />
+    </audio>
+  </td>
+
+  <td><p> </p>
+    <audio id="player" controls>
+        <source src="./audios/Neutral_0012_000022_2_Neutral_0016_000028_vis.wav" type="audio/wav" />
+    </audio>
+  </td>
+</tr>
+
+
+  <tr></tr>
+  <tr></tr>
+  
+  <tr>
+    <td rowspan="2" style="vertical-align: top;"><p></p>
+    <audio id="player" controls>
+        <source src="./audios/0014_000045.wav"  type="audio/wav" />
+    </audio>
+  </td>
+  <td rowspan="2" style="vertical-align: top;"><p></p>
+    <audio id="player" controls>
+        <source src="./audios/0019_000045.wav" type="audio/wav" />
+    </audio>
+  </td>
+
+  <td><p> </p>
+    <audio id="player" controls>
+        <source src="./audios/Neutral_0014_000045_2_Neutral_0019_000030_vis.wav" type="audio/wav" />
+    </audio>
+  </td>
+</tr>
+
+
+<tr></tr>
+  <tr></tr>
+  
+  <tr>
+    <td rowspan="2" style="vertical-align: top;"><p></p>
+    <audio id="player" controls>
+        <source src="./audios/0019_001083.wav"  type="audio/wav" />
+    </audio>
+  </td>
+  <td rowspan="2" style="vertical-align: top;"><p></p>
+    <audio id="player" controls>
+        <source src="./audios/0020_001083.wav" type="audio/wav" />
+    </audio>
+  </td>
+
+  <td><p> </p>
+    <audio id="player" controls>
+        <source src="./audios/Sad_0019_001083_2_Sad_0020_001079_vis.wav" type="audio/wav" />
+    </audio>
+  </td>
+</tr>
+
+<tr></tr>
+  <tr></tr>
+  
+  <tr>
+    <td rowspan="2" style="vertical-align: top;"><p></p>
+    <audio id="player" controls>
+        <source src="./audios/0019_001444.wav"  type="audio/wav" />
+    </audio>
+  </td>
+  <td rowspan="2" style="vertical-align: top;"><p></p>
+    <audio id="player" controls>
+        <source src="./audios/0016_001444.wav" type="audio/wav" />
+    </audio>
+  </td>
+
+  <td><p> </p>
+    <audio id="player" controls>
+        <source src="./audios/Surprise_0019_001444_2_Surprise_0016_001435_vis.wav" type="audio/wav" />
+    </audio>
+  </td>
+</tr>
+ 
+ 
+  </tbody>
+</table>
+
+
+
+  
+
+
+
+
